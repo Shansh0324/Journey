@@ -1,0 +1,33 @@
+* {
+  margin: 0%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+html{
+  background-color: #333333;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.notes{
+  gap : 1rem;
+  display: flex;
+  padding-block: 1rem;
+  padding-inline : 3rem;
+  flex-wrap: wrap;
+}
+
+.note{
+  background-color: rgb(255, 255, 255);
+  padding: 1rem;
+  border-radius: 0.7rem;
+  max-width: 20rem;
+  color : #333333;
+}
