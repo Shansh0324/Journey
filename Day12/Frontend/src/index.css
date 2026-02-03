@@ -1,5 +1,5 @@
 * {
-  margin: 0%;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
@@ -11,23 +11,123 @@ body,
   width: 100%;
 }
 
-html{
+html {
   background-color: #333333;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-.notes{
-  gap : 1rem;
+/* Main notes container */
+.notes {
   display: flex;
-  padding-block: 1rem;
-  padding-inline : 3rem;
   flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem 3rem;
+  align-items: flex-start;
 }
 
-.note{
-  background-color: rgb(255, 255, 255);
+/* Individual note card */
+.note {
+  background-color: #ffffff;
   padding: 1rem;
   border-radius: 0.7rem;
   max-width: 20rem;
-  color : #333333;
+  width: 100%;
+  color: #333333;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Create note form */
+.note-create-form {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.7rem;
+  border-radius: 0.6rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Inputs */
+.note-create-form input,
+.note input {
+  flex: 1;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.note-create-form input:focus,
+.note input:focus {
+  border-color: #333333;
+}
+
+/* Buttons */
+button {
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.4rem;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+/* Create button */
+.note-create-form button {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.note-create-form button:hover {
+  background-color: #111111;
+}
+
+/* Delete button */
+.note button:first-of-type {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.note button:first-of-type:hover {
+  background-color: #d93636;
+}
+
+/* Update section */
+.note div {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+/* Update button */
+.note div button {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.note div button:hover {
+  background-color: #111111;
+}
+
+/* Error message */
+p {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .notes {
+    padding: 1rem;
+  }
+
+  .note-create-form {
+    flex-direction: column;
+  }
 }
