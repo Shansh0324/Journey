@@ -6,6 +6,8 @@ const multer = require("multer");
 const upload = multer({
     storage : multer.memoryStorage()
 })
+
+const identifyUser = require("../middlewares/auth.middleware")
 /**
  * POST /api/posts
  * Create a new post
@@ -17,13 +19,13 @@ const upload = multer({
  * - 500 Internal Server
  */
 
-postRouter.post("/", upload.single("image"), postController.createPostController);
+postRouter.post("/", upload.single("image"), identifyUser, postController.createPostController);
 
 /**
  * GET /api/posts/{protected}
  */
 
-postRouter.get("/",postController.getPostControllers);
+postRouter.get("/",identifyUser, postController.getPostControllers);
 
 /**
  * GET /api/posts/details/:postId
@@ -31,6 +33,6 @@ postRouter.get("/",postController.getPostControllers);
  * also check whether the post belonsg to the user that is requesting 
  */
 
-postRouter.get("/details/:postId", postController.getPostDetails);
+postRouter.get("/details/:postId", identifyUser, postController.getPostDetails);
 
 module.exports = postRouter;

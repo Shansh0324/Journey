@@ -1,133 +1,116 @@
 const postModel = require("../models/post.model");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
-const jwt = require("jsonwebtoken");
 
 const imagekit = new ImageKit({
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY, 
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
 });
+
 
 // CREATE POST
 async function createPostController(req, res) {
   try {
-    //  Token check
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
 
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
+    const userId = req.user.id;
 
-    //  File check
+    // File check
     if (!req.file) {
-      return res.status(400).json({ message: "Image is required" });
+      return res.status(400).json({
+        message: "Image is required"
+      });
     }
 
-    // Upload image
+    // Upload image to ImageKit
     const uploadedFile = await imagekit.files.upload({
       file: await toFile(req.file.buffer, req.file.originalname),
       fileName: req.file.originalname,
-      folder: "Posts", 
+      folder: "Posts"
     });
 
-    //  Save in DB
+    // Save post
     const post = await postModel.create({
       caption: req.body.caption || "",
       imgUrl: uploadedFile.url,
-      user: decoded.id,
+      user: userId
     });
 
-    //  Response
     return res.status(201).json({
       message: "Post created successfully",
-      post,
+      post
     });
 
   } catch (error) {
     console.error("Create Post Error:", error);
+
     return res.status(500).json({
       message: "Something went wrong",
-      error: error.message,
+      error: error.message
     });
   }
 }
 
-async function getPostControllers(req, res){
-  const token = req.cookies.token;
 
-    if(!token){
-    return res.status(401).json({
-      message : "User not authenticated"
-    })
-  }
 
-  let decoded = null;
-  try{
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-
-  const userId = decoded.id;
-
-  const posts = await postModel.find({user : userId})
-  res.status(200).json({
-    message : "Posts fetched successfully",
-    posts
-  })
-
-}
-
-async function getPostDetails(req, res) {
-
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({
-      message: "User not authenticated"
-    });
-  }
-
-  let decoded = null;
-
+// GET ALL POSTS OF LOGGED IN USER
+async function getPostControllers(req, res) {
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const userId = req.user.id;
+
+    const posts = await postModel.find({ user: userId });
+
+    return res.status(200).json({
+      message: "Posts fetched successfully",
+      posts
+    });
+
   } catch (error) {
-    return res.status(401).json({
-      message: "Invalid token"
+    return res.status(500).json({
+      message: "Something went wrong",
+      error: error.message
     });
   }
-
-  const userId = decoded.id;
-  const postId = req.params.postId;
-
-  const post = await postModel.findById(postId);
-
-  if (!post) {
-    return res.status(404).json({
-      message: "Post not found"
-    });
-  }
-
-  const isValidUser = post.user.toString() === userId;
-
-  if (!isValidUser) {
-    return res.status(403).json({
-      message: "You are not authorized to view this post"
-    });
-  }
-
-  res.status(200).json({
-    message: "Post details fetched successfully",
-    post
-  });
-
 }
+
+
+
+// GET POST DETAILS
+async function getPostDetails(req, res) {
+  try {
+
+    const userId = req.user.id;
+    const postId = req.params.postId;
+
+    const post = await postModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found"
+      });
+    }
+
+    const isValidUser = post.user.toString() === userId;
+
+    if (!isValidUser) {
+      return res.status(403).json({
+        message: "You are not authorized to view this post"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Post details fetched successfully",
+      post
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+      error: error.message
+    });
+  }
+}
+
+
 
 module.exports = {
   createPostController,

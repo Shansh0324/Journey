@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@imagekit/nodejs": "^7.3.0",
-    "multer": "^2.0.2"
-  }
-}
