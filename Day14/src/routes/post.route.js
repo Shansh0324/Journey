@@ -17,6 +17,20 @@ const upload = multer({
  * - 500 Internal Server
  */
 
-postRouter.post("/",upload.single("image") ,postController.createPostController);
+postRouter.post("/", upload.single("image"), postController.createPostController);
+
+/**
+ * GET /api/posts/{protected}
+ */
+
+postRouter.get("/",postController.getPostControllers);
+
+/**
+ * GET /api/posts/details/:postId
+ * returns details of a specific post by ID
+ * also check whether the post belonsg to the user that is requesting 
+ */
+
+postRouter.get("/details/:postId", postController.getPostDetails);
 
 module.exports = postRouter;
