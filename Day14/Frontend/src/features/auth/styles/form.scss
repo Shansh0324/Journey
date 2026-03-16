@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+$black: #000000;
+$white: #ffffff;
+$border-color: #f3f4f6;
+$text-muted: #9ca3af;
+$error-red: #ef4444;
+$success-green: #10b981;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%);
+  padding: 40px 20px;
+
+  .content-wrapper {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .logo-box {
+    width: 56px;
+    height: 56px;
+    background: $white;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    color: $black;
+  }
+
+  .header-text {
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      color: $text-muted;
+      font-size: 15px;
+    }
+  }
+
+  .form-card {
+    background: $white;
+    padding: 32px;
+    border-radius: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: relative;
+
+        label {
+          font-size: 14px;
+          font-weight: 700;
+          color: $black;
+          padding-left: 2px;
+        }
+
+        input {
+          padding: 14px 18px;
+          border-radius: 14px;
+          border: 1px solid $border-color;
+          font-size: 16px;
+          width: 100%;
+          transition: all 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $black;
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.02);
+          }
+
+          &.error-border {
+            border-color: $error-red;
+          }
+        }
+
+        .error-text {
+          font-size: 12px;
+          color: $error-red;
+          font-weight: 500;
+          margin-top: -4px;
+        }
+      }
+
+      /* PASSWORD FIELD */
+
+      .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        input {
+          width: 100%;
+        }
+
+        .eye-icon {
+          position: absolute;
+          right: 14px;
+          background: none;
+          border: none;
+          color: $text-muted;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            color: $black;
+          }
+        }
+      }
+
+      /* PRIMARY BUTTON */
+
+      .btn-primary {
+        margin-top: 8px;
+        background: $black;
+        color: $white;
+        padding: 16px;
+        border-radius: 14px;
+        border: none;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: transform 0.1s ease, opacity 0.2s ease;
+
+        &:hover {
+          opacity: 0.9;
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+    }
+
+    /* SUCCESS / ERROR MESSAGE */
+
+    .status-message {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .status-message.success {
+      color: $success-green;
+    }
+
+    .status-message.error {
+      color: $error-red;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background: $border-color;
+    margin: 24px 0;
+  }
+
+  /* SOCIAL LOGIN BUTTONS */
+
+  .social-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .btn-social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      width: 100%;
+      padding: 14px;
+
+      background: $white;
+      border: 1px solid $border-color;
+      border-radius: 14px;
+
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #fafafa;
+      }
+
+      .social-logo {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  /* FOOTER */
+
+  .footer-text {
+    margin-top: 24px;
+    font-size: 14px;
+    color: $text-muted;
+    text-align: center;
+
+    a {
+      color: $black;
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 4px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
