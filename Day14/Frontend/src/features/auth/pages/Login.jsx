@@ -1,56 +1,54 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/form.scss";
 import { Heart, Eye, EyeOff } from "lucide-react";
-import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
 
+  const { handleLogin, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-card">
+          <div className="spinner"></div>
+          <p>Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        {
-          email,
-          password
-        },
-        {
-          withCredentials: true
-        }
-      );
-
-      console.log(res.data);
+      await handleLogin(email, password);
 
       setStatus("success");
-      setMessage("Login successful!");
+      setMessage("Logged in successfully!");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 800);
 
     } catch (err) {
-
       setStatus("error");
-
-      if (err.response) {
-        setMessage(err.response.data.message || "Login failed");
-      } else {
-        setMessage("Server not reachable");
-      }
-
-      console.error(err);
+      setMessage("Login failed. Please check your credentials.");
     }
   }
 
   return (
     <main className="auth-page">
       <div className="content-wrapper">
-
         <div className="logo-box">
           <Heart size={28} strokeWidth={2.5} />
         </div>
@@ -61,9 +59,7 @@ const Login = () => {
         </div>
 
         <div className="form-card">
-
           <form onSubmit={handleSubmit}>
-
             <div className="input-group">
               <label>Email</label>
               <input
@@ -79,7 +75,6 @@ const Login = () => {
               <label>Password</label>
 
               <div className="password-wrapper">
-
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
@@ -95,14 +90,12 @@ const Login = () => {
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
-
               </div>
             </div>
 
             <button type="submit" className="btn-primary">
               Sign In
             </button>
-
           </form>
 
           {message && (
@@ -114,7 +107,6 @@ const Login = () => {
           <div className="divider"></div>
 
           <div className="social-group">
-
             <button className="btn-social">
               <img
                 src="/apple-logo.png"
@@ -133,13 +125,11 @@ const Login = () => {
               </svg>
               Continue with Google
             </button>
-
           </div>
 
           <p className="footer-text">
             New user? <Link to="/register">Register</Link>
           </p>
-
         </div>
       </div>
     </main>

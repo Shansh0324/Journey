@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/form.scss";
 import { Heart, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const Register = () => {
   const [showPass, setShowPass] = useState(false);
@@ -13,6 +14,8 @@ const Register = () => {
     password: "",
     confirm: "",
   });
+
+  const{ handleRegister } = useAuth();
 
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState(""); // success | error
@@ -32,50 +35,24 @@ const Register = () => {
 
     if (!isMatch) {
       setStatus("error");
-      setMessage("Passwords do not match");
+      setMessage("Passwords do not match.");
       return;
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/api/auth/register",
-        {
-          username,
-          email,
-          password: passwords.password,
-        },{
-          withCredentials: true
-        }
-      );
-
+      await handleRegister(username, email, passwords.password);
       setStatus("success");
       setMessage("Account created successfully!");
-
-      console.log(res.data);
-
-      // clear form
-      setUsername("");
-      setEmail("");
-      setPasswords({
-        password: "",
-        confirm: "",
-      });
-
     } catch (err) {
       setStatus("error");
-
-      if (err.response) {
-        setMessage(err.response.data.message || "Registration failed");
-      } else {
-        setMessage("Server not reachable");
-      }
+      setMessage("Registration failed. Please try again.");
     }
+
   }
 
   return (
     <main className="auth-page">
       <div className="content-wrapper">
-
         <div className="logo-box">
           <Heart size={28} strokeWidth={2.5} />
         </div>
@@ -87,7 +64,6 @@ const Register = () => {
 
         <div className="form-card">
           <form onSubmit={handleSubmit}>
-
             <div className="input-group">
               <label>Full Name</label>
               <input
@@ -147,22 +123,17 @@ const Register = () => {
               />
 
               {!isMatch && (
-                <span className="error-text">
-                  Passwords do not match
-                </span>
+                <span className="error-text">Passwords do not match</span>
               )}
             </div>
 
             <button type="submit" className="btn-primary">
               Create Account
             </button>
-
           </form>
 
           {message && (
-            <div className={`status-message ${status}`}>
-              {message}
-            </div>
+            <div className={`status-message ${status}`}>{message}</div>
           )}
 
           <div className="divider"></div>
@@ -171,7 +142,6 @@ const Register = () => {
             Already have an account?
             <Link to="/login"> Log in</Link>
           </p>
-
         </div>
       </div>
     </main>

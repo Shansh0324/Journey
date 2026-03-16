@@ -136,7 +136,35 @@ async function loginController(req, res) {
   }
 }
 
+async function meController(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const user = await userModel.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      message: "User found",
+      user
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong",
+      error: error.message
+    });
+  }
+}
+
+
+
 module.exports = {
     registerController, 
-    loginController
+    loginController,
+    meController
 }
